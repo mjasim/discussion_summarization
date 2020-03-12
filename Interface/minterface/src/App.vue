@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="#2c485b" dark>
-      <v-btn text @click="goToOverview">Matryona</v-btn>
+      <v-btn text x-large @click="goToOverview">Matryona</v-btn>
     </v-app-bar>
 
     <v-content>
