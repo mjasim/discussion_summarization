@@ -1,5 +1,4 @@
 <template>
-  <!-- <v-content> -->
   <v-container fluid fill-height>
     <v-layout justify-center>
       <v-flex>
@@ -9,26 +8,45 @@
               <v-card-title flat style="padding: 2px">
                 <div style="width: 20%; margin-right: 1%">
                   <v-layout id="proposals" row justify-start>
-                    <v-btn depressed text
-                    :id = "item.id"
-                    @click="propSelected(item.id)"
+                    <v-btn
+                      depressed
+                      text
+                      :id="item.id"
+                      @click="propSelected(item.id)"
                     >{{ item.name }}</v-btn>
                   </v-layout>
                 </div>
                 <div style="width: 35%; margin-right:1%">
                   <v-layout id="topics" row justify-start>
                     <template v-for="(topic, index) in item.topics">
-                      <v-btn depressed outlined
-                      style="border-color: lightgray; margin-right: 2px" 
-                      :id = "item.id + '_' + index"
-                      :key="index" @click="topicButtonSelected(item.id, index)">{{ topic }}</v-btn>
+                      <v-btn
+                        depressed
+                        outlined
+                        style="border-color: lightgray; margin-right: 2px"
+                        :id="item.id + '_' + index"
+                        :key="index"
+                        @click="topicButtonSelected(item.id, index)"
+                      >{{ topic }}</v-btn>
                     </template>
                   </v-layout>
                 </div>
                 <div style="width: 4%; margin-right: 3%">
-                  <v-row align="center" justify="center">
-                    <v-select height="20px" :items="item.topics" @change="topicDDSelected"></v-select>
-                  </v-row>
+                  <template>
+                    <div class="text-center">
+                      <v-menu offset-y>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-on="on" fab depressed x-small>
+                            <v-icon>arrow_drop_down</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-list>
+                          <v-list-item v-for="(ddTopics, index) in item.topics" :key="index" @click="topicDDSelected(item.id, index)">
+                            <v-list-item-title>{{ ddTopics }}</v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </div>
+                  </template>
                 </div>
                 <div style="width: 36%">
                   <v-layout id="heatmapbox" row justify-start>
@@ -39,7 +57,7 @@
                             v-on="on"
                             depressed
                             tile
-                            style="margin-left:1%; margin-right:1px; height:50px; min-width: 50px; width:50px; padding: 0px;"
+                            style="margin-left:1%; margin-right:1px; height:40px; min-width: 40px; width:40px; padding: 0px;"
                             :color="i.color"
                             @click="discourseBoxSelected(index)"
                           ></v-btn>
@@ -56,7 +74,6 @@
       </v-flex>
     </v-layout>
   </v-container>
-  <!-- </v-content> -->
 </template>
 
 <script>
@@ -64,7 +81,18 @@ export default {
   name: "OverView",
 
   data: () => ({
-    blueSpectrum: ["#f6feff", "#f7fbff", "deebf7", "c6dbef", "9ecae1", "6baed6", "4292c6", "2171b5", "08519c", "08306b"],
+    blueSpectrum: [
+      "#f6feff",
+      "#f7fbff",
+      "deebf7",
+      "c6dbef",
+      "9ecae1",
+      "6baed6",
+      "4292c6",
+      "2171b5",
+      "08519c",
+      "08306b"
+    ],
     proposal_names: [
       {
         id: "1",
@@ -104,10 +132,6 @@ export default {
             color: "brown"
           },
           {
-            value: 2,
-            color: "white"
-          },
-          {
             value: 90,
             color: "brown"
           }
@@ -143,10 +167,6 @@ export default {
             color: "purple"
           },
           {
-            value: 2,
-            color: "white"
-          },
-          {
             value: 90,
             color: "brown"
           },
@@ -168,10 +188,6 @@ export default {
           {
             value: 12,
             color: "red"
-          },
-          {
-            value: 7,
-            color: "blue"
           },
           {
             value: 5,
@@ -215,10 +231,6 @@ export default {
           {
             value: 12,
             color: "red"
-          },
-          {
-            value: 7,
-            color: "blue"
           },
           {
             value: 5,
@@ -268,10 +280,6 @@ export default {
             color: "blue"
           },
           {
-            value: 5,
-            color: "green"
-          },
-          {
             value: 9,
             color: "yellow"
           },
@@ -305,18 +313,27 @@ export default {
   }),
 
   methods: {
-    propSelected(prop_id){
+    propSelected(prop_id) {
       console.log(prop_id);
     },
     topicButtonSelected(prop_id, top_id) {
       console.log(prop_id + "_" + top_id);
     },
-    topicDDSelected(value) {
-      console.log(value);
+    topicDDSelected(prop_id, top_id) {
+      console.log(prop_id + "_" + top_id);
     },
-    discourseBoxSelected(discourse){
-      console.log(discourse)
+    discourseBoxSelected(discourse) {
+      console.log(discourse);
     }
   }
 };
 </script>
+
+<style scoped>
+/* .v-text-field--box .v-input__slot,
+.v-text-field--outline .v-input__slot {
+  min-height: auto!important;
+  display: flex!important;
+  align-items: center!important;
+} */
+</style>
