@@ -1,23 +1,25 @@
 <template>
   <v-app>
-    <v-app-bar app color="#2c485b" dark>
+    <v-app-bar dense app color="#2c485b" dark>
       <v-btn text x-large @click="goToOverview">Matryona</v-btn>
     </v-app-bar>
 
     <v-content>
-      <OverView />
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import OverView from "./components/OverView";
+import OverView from "./components/OverView.vue";
+import Details from "./components/Details.vue";
 
 export default {
   name: "App",
 
   components: {
-    OverView
+    OverView,
+    Details
   },
 
   data: () => ({

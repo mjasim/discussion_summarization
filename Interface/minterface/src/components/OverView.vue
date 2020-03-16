@@ -2,35 +2,70 @@
   <v-container fluid fill-height>
     <v-layout justify-center>
       <v-flex>
-        <template v-for="item in proposal_names">
-          <v-hover v-slot:default="{ hover }" open-delay="0" :key="item.id">
+        <v-layout>
+          <div style="width: 15%; padding-left: 1.5%">
+            <b>Proposals</b>
+          </div>
+          <div style="width: 45%; padding-left:6%">
+            <b>Topics</b>
+          </div>
+          <div style="width: 3%; padding-left: 13%">
+            <!-- <b>#</b> -->
+          </div>
+          <div style="width: 36%; padding-left: 18%">
+            <b>Discourse</b>
+          </div>
+        </v-layout>
+        <v-layout>
+          <div style="width: 18%; padding-left: 1.5%"></div>
+          <div style="width: 45%; padding-left: 1.5%"></div>
+          <div style="width: 3%; margin-right: 1%"></div>
+          <div style="width: 36%; padding-left: 6%">
+            <v-layout id="heatmapHeader" row justify-start>
+              <template v-for="(i, index) in discourses">
+                <span
+                  :key="index"
+                  style="width: 40px; height: 30px; margin-top:10%; margin-right: 1.25%; -webkit-transform: rotate(-55deg); -moz-transform: rotate(-55deg); font-size: 12px"
+                >{{i}}</span>
+              </template>
+            </v-layout>
+          </div>
+        </v-layout>
+        <template v-for="item in overview_data">
+          <v-hover v-slot:default="{ hover }" open-delay="0" :key="item.discussion_id">
             <v-card :elevation="hover ? 16 : 1" light style="margin: 5px">
               <v-card-title flat style="padding: 2px">
-                <div style="width: 20%; margin-right: 1%">
-                  <v-layout id="proposals" row justify-start>
+                <div style="width: 18%; margin-right: 1%">
+                  <v-layout id="proposals" justify-start>
                     <v-btn
                       depressed
                       text
-                      :id="item.id"
-                      @click="propSelected(item.id)"
-                    >{{ item.name }}</v-btn>
+                      :id="item.discussion_id"
+                      @click="propSelected(item.discussion_name)"
+                      text-truncate
+                    >
+                      <span
+                        style="max-width: 200px; white-space:nowrap; overflow:hidden; text-overflow: ellipsis"
+                      >{{ item.discussion_name }}</span>
+                    </v-btn>
                   </v-layout>
                 </div>
-                <div style="width: 35%; margin-right:1%">
+                <div style="width: 45%; margin-right:1%">
                   <v-layout id="topics" row justify-start>
                     <template v-for="(topic, index) in item.topics">
                       <v-btn
                         depressed
                         outlined
-                        style="border-color: lightgray; margin-right: 2px"
-                        :id="item.id + '_' + index"
+                        small
+                        style="border-color: lightgray; margin: 1px"
+                        :id="item.discussion_id + '_' + index"
                         :key="index"
-                        @click="topicButtonSelected(item.id, index)"
-                      >{{ topic }}</v-btn>
+                        @click="topicButtonSelected(item.discussion_id, index)"
+                      >{{ topic.topic_phrase }}</v-btn>
                     </template>
                   </v-layout>
                 </div>
-                <div style="width: 4%; margin-right: 3%">
+                <div style="width: 3%; margin-right: 2%">
                   <template>
                     <div class="text-center">
                       <v-menu offset-y>
@@ -38,19 +73,24 @@
                           <v-btn v-on="on" fab depressed x-small>
                             <v-icon>arrow_drop_down</v-icon>
                           </v-btn>
+                          <!-- <v-btn v-on="on" fab x-small depressed>{{item.number_of_comments}}</v-btn> -->
                         </template>
                         <v-list>
-                          <v-list-item v-for="(ddTopics, index) in item.topics" :key="index" @click="topicDDSelected(item.id, index)">
-                            <v-list-item-title>{{ ddTopics }}</v-list-item-title>
+                          <v-list-item
+                            v-for="(ddTopics, index) in item.topics"
+                            :key="index"
+                            @click="topicDDSelected(item.discussion_id, index)"
+                          >
+                            <v-list-item-title>{{ ddTopics.topic_phrase }}</v-list-item-title>
                           </v-list-item>
                         </v-list>
                       </v-menu>
                     </div>
                   </template>
                 </div>
-                <div style="width: 36%">
+                <div style="width: 30%">
                   <v-layout id="heatmapbox" row justify-start>
-                    <template v-for="(i, index) in item.discourse">
+                    <template v-for="(i, index) in item.discourses">
                       <v-tooltip bottom :key="index">
                         <template v-slot:activator="{on}">
                           <v-btn
@@ -62,7 +102,7 @@
                             @click="discourseBoxSelected(index)"
                           ></v-btn>
                         </template>
-                        <span>{{ i.value }}</span>
+                        <span>{{ i.count }}</span>
                       </v-tooltip>
                     </template>
                   </v-layout>
@@ -77,22 +117,37 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "OverView",
 
   data: () => ({
+    discourses: [
+      "Question",
+      "Answer",
+      "Announcement",
+      "Elaboration",
+      "Appreciation",
+      "Agreement",
+      "Disagreement",
+      "Negative_reaction",
+      "Humor",
+      "Other"
+    ],
     blueSpectrum: [
       "#f6feff",
       "#f7fbff",
-      "deebf7",
-      "c6dbef",
-      "9ecae1",
-      "6baed6",
-      "4292c6",
-      "2171b5",
-      "08519c",
-      "08306b"
+      "#deebf7",
+      "#c6dbef",
+      "#9ecae1",
+      "#6baed6",
+      "#4292c6",
+      "#2171b5",
+      "#08519c",
+      "#08306b"
     ],
+    overview_data: [],
     proposal_names: [
       {
         id: "1",
@@ -313,8 +368,20 @@ export default {
   }),
 
   methods: {
-    propSelected(prop_id) {
-      console.log(prop_id);
+    fetchData() {
+      axios.get("/" + "mat_data_cc.json").then(response => {
+        console.log(response);
+        this.overview_data = response.data;
+      });
+    },
+    propSelected(prop_name) {
+      console.log(prop_name);
+      localStorage.setItem("proposal", prop_name)
+      this.$router.push("/details").catch(error => {
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     },
     topicButtonSelected(prop_id, top_id) {
       console.log(prop_id + "_" + top_id);
@@ -325,15 +392,12 @@ export default {
     discourseBoxSelected(discourse) {
       console.log(discourse);
     }
+  },
+  created() {
+    this.fetchData();
   }
 };
 </script>
 
 <style scoped>
-/* .v-text-field--box .v-input__slot,
-.v-text-field--outline .v-input__slot {
-  min-height: auto!important;
-  display: flex!important;
-  align-items: center!important;
-} */
 </style>
