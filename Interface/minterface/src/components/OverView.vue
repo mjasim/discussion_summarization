@@ -10,7 +10,7 @@
             <b>Topics</b>
           </div>
           <div style="width: 3%; padding-left: 13%">
-            <!-- <b>#</b> -->
+            <b>#</b>
           </div>
           <div style="width: 36%; padding-left: 18%">
             <b>Discourse</b>
@@ -70,10 +70,10 @@
                     <div class="text-center">
                       <v-menu offset-y>
                         <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" fab depressed x-small>
+                          <!-- <v-btn v-on="on" fab depressed x-small>
                             <v-icon>arrow_drop_down</v-icon>
-                          </v-btn>
-                          <!-- <v-btn v-on="on" fab x-small depressed>{{item.number_of_comments}}</v-btn> -->
+                          </v-btn> -->
+                          <v-btn v-on="on" fab x-small depressed>{{item.number_of_comments}}</v-btn>
                         </template>
                         <v-list>
                           <v-list-item
@@ -97,7 +97,7 @@
                             v-on="on"
                             depressed
                             tile
-                            style="margin-left:1%; margin-right:1px; height:40px; min-width: 40px; width:40px; padding: 0px;"
+                            style="margin-left:1%; margin-right:1px; height:40px; min-width: 40px; border: solid thin lightgray; width:40px; padding: 0px;"
                             :color="i.color"
                             @click="discourseBoxSelected(index)"
                           ></v-btn>
@@ -148,223 +148,6 @@ export default {
       "#08306b"
     ],
     overview_data: [],
-    proposal_names: [
-      {
-        id: "1",
-        name: "Proposal_1",
-        topics: ["Topic_1", "Topic_2", "Topic_3", "Topic_4", "Topic_5"],
-        discourse: [
-          {
-            value: 12,
-            color: "red"
-          },
-          {
-            value: 7,
-            color: "blue"
-          },
-          {
-            value: 5,
-            color: "green"
-          },
-          {
-            value: 9,
-            color: "yellow"
-          },
-          {
-            value: 7,
-            color: "black"
-          },
-          {
-            value: 3,
-            color: "purple"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          },
-          {
-            value: 90,
-            color: "brown"
-          }
-        ]
-      },
-      {
-        id: "2",
-        name: "Proposal_2",
-        topics: ["Topic_1", "Topic_2"],
-        discourse: [
-          {
-            value: 12,
-            color: "red"
-          },
-          {
-            value: 7,
-            color: "blue"
-          },
-          {
-            value: 5,
-            color: "green"
-          },
-          {
-            value: 9,
-            color: "yellow"
-          },
-          {
-            value: 7,
-            color: "black"
-          },
-          {
-            value: 3,
-            color: "purple"
-          },
-          {
-            value: 90,
-            color: "brown"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          }
-        ]
-      },
-      {
-        id: "3",
-        name: "Proposal_3",
-        topics: ["Topic_1", "Topic_2", "Topic_3"],
-        discourse: [
-          {
-            value: 12,
-            color: "red"
-          },
-          {
-            value: 5,
-            color: "green"
-          },
-          {
-            value: 9,
-            color: "yellow"
-          },
-          {
-            value: 7,
-            color: "black"
-          },
-          {
-            value: 3,
-            color: "purple"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          }
-        ]
-      },
-      {
-        id: "4",
-        name: "Proposal_4",
-        topics: ["Topic_1"],
-        discourse: [
-          {
-            value: 12,
-            color: "red"
-          },
-          {
-            value: 5,
-            color: "green"
-          },
-          {
-            value: 9,
-            color: "yellow"
-          },
-          {
-            value: 7,
-            color: "black"
-          },
-          {
-            value: 3,
-            color: "purple"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          }
-        ]
-      },
-      {
-        id: "5",
-        name: "Proposal_5",
-        topics: ["Topic_1", "Topic_2", "Topic_3"],
-        discourse: [
-          {
-            value: 12,
-            color: "red"
-          },
-          {
-            value: 7,
-            color: "blue"
-          },
-          {
-            value: 9,
-            color: "yellow"
-          },
-          {
-            value: 7,
-            color: "black"
-          },
-          {
-            value: 3,
-            color: "purple"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          },
-          {
-            value: 2,
-            color: "white"
-          },
-          {
-            value: 90,
-            color: "brown"
-          }
-        ]
-      }
-    ]
   }),
 
   methods: {
